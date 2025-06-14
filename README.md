@@ -92,7 +92,7 @@ screen -r bedrock
 
 ### 🔁 Auto-Start on Reboot
 
-The install.sh script adds the following to your crontab:
+The installer adds this to crontab:
 
 ```bash
 @reboot screen -dmS bedrock $HOME/Minecraft/bedrock-server-oracle/start.sh
@@ -131,6 +131,14 @@ crontab -l
 ### ⚙️ Recommended server.properties
 
 Edit server.properties manually inside ~/Minecraft/bedrock/ with these settings:
+
+Edit manually:
+
+```bash
+nano ~/Minecraft/bedrock/server.properties
+```
+
+Suggested config:
 
 ```text
 max-players=5

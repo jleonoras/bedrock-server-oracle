@@ -3,21 +3,21 @@
 
 cd ~/Minecraft/bedrock
 
-# Safety check
+# Check for server binary
 if [ ! -f bedrock_server ]; then
-  echo "[!] bedrock_server not found! Make sure you have installed the server correctly."
+  echo "[!] bedrock_server not found! Did you run install.sh?"
   exit 1
 fi
 
 echo "[*] Starting Minecraft Bedrock server..."
 
-# Start the server in a named screen session (or attach if it's already running)
+# Start or reattach to screen session
 if screen -list | grep -q "bedrock"; then
-  echo "[i] A screen session named 'bedrock' is already running."
-  echo "[i] Attaching to it..."
+  echo "[i] Screen session 'bedrock' already running."
+  echo "[i] Attaching..."
   screen -r bedrock
 else
   screen -dmS bedrock ./bedrock_server
-  echo "[✓] Server started in a detached screen session named 'bedrock'."
-  echo "    Use 'screen -r bedrock' to view it."
+  echo "[✓] Server started in screen session 'bedrock'."
+  echo "    Use 'screen -r bedrock' to attach."
 fi
