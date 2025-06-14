@@ -62,17 +62,10 @@ This script will:
 - Create a 1GB swap file
 - Add auto-start at reboot via crontab
 
-### 3. Start the Server
-
-```bash
-cd ~/Minecraft/bedrock
-./start.sh
-```
-
 ### 4. Start the Server
 
 ```bash
-cd ~/Minecraft/bedrock
+cd ~/Minecraft/bedrock-server-oracle
 ./start.sh
 ```
 
