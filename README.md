@@ -4,25 +4,37 @@ This setup is optimized to run a lightweight **Minecraft Bedrock Dedicated Serve
 
 ---
 
+## 📦 Features
+
+- ✅ Pre-packaged Bedrock server ZIP
+- 🌀 Auto-start on system reboot
+- 🧠 1GB swap space for stability
+- ⚙️ Pre-tuned `server.properties` guidance
+- 💥 Runs in `screen-based` session for resilience
+
+---
+
 ## 📂 Folder Structure
 
 ```text
-~/Minecraft/
-├── bedrock/                   # Actual Bedrock server files
-│   ├── bedrock_server
-│   ├── server.properties
-│   └── bedrock-server.zip
-└── bedrock-server-oracle/     # Your Git repository
-    ├── install.sh
-    ├── start.sh
-    └── README.md
+Minecraft/
+├── bedrock/
+│ ├── bedrock_server
+│ ├── server.properties
+│ └── bedrock-server.zip
+│
+└── bedrock-server-oracle/
+  ├── install.sh
+  ├── start.sh
+  ├── README.md
+  └── bedrock-server-<version>.zip
 ```
 
 ---
 
-## 🚀 Setup Instructions
+## 🚀 Installation
 
-### 1. Clone the Repo
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/jleonoras/bedrock-server-oracle.git ~/Minecraft/bedrock-server-oracle
@@ -30,49 +42,52 @@ cd ~/Minecraft/bedrock-server-oracle
 chmod +x install.sh start.sh
 ```
 
-### 2. Download the Bedrock Server
+### 2. Upload the Bedrock Server ZIP
 
-You have two options:
+```bash
+wget -O ~/Minecraft/bedrock-server-oracle/bedrock-server-1.21.84.1.zip https://bedrock.jleonoras.eu.org/bedrock-server-1.21.84.1.zip
+```
 
-📥 (A) Automatic Download
-
-If wget works in your region, the script will download the server for you:
+### 3. Install the Server
 
 ```bash
 ./install.sh
 ```
 
-🔁 (B) Manual Upload via SCP (If wget fails)
+This script will:
 
-1. Download the server ZIP from:
+- Update the system
+- Install required packages
+- Extract Bedrock server into ~/Minecraft/bedrock/
+- Create a 1GB swap file
+- Add auto-start at reboot via crontab
 
-   https://www.minecraft.net/en-us/download/server/bedrock
-
-2. Upload it to your server:
-
-```bash
-scp bedrock-server-*.zip ubuntu@<your-server-ip>:~/Minecraft/bedrock/bedrock-server.zip
-```
-
-3. Then run the installer:
-
-```bash
-./install.sh
-```
-
-### ▶️ Starting the Server
-
-From the server directory:
+### 3. Start the Server
 
 ```bash
 cd ~/Minecraft/bedrock
 ./start.sh
 ```
 
-It will run inside a screen session named bedrock. You can detach with:
+### 4. Start the Server
 
 ```bash
-Ctrl + A, then D
+cd ~/Minecraft/bedrock
+./start.sh
+```
+
+To run in the background using screen:
+
+```bash
+screen -S bedrock
+./start.sh
+# Detach with Ctrl+A then D
+```
+
+To detach
+
+```text
+Ctrl+A, then D
 ```
 
 To reattach:
@@ -81,19 +96,31 @@ To reattach:
 screen -r bedrock
 ```
 
-Then start the server:
+---
+
+### 🔁 Auto-Start on Reboot
+
+The install.sh script adds the following to your crontab:
 
 ```bash
-cd ../bedrock
-./start.sh
+@reboot screen -dmS bedrock $HOME/Minecraft/bedrock/start.sh
+```
+
+You can confirm it with:
+
+```bash
+crontab -l
 ```
 
 ---
 
 ### 🔓 Open Port 19132 (UDP) on Oracle Cloud
 
-1. Go to Oracle Cloud → Networking > VCN > Subnets > Security Lists
-2. Add **Ingress Rule**:
+1. Go to Oracle Cloud Console
+
+2. Navigate: Networking → VCN → Subnets → Security Lists
+
+3. Add **Ingress Rule**:
    - **Protocol**: UDP
    - **Port**: `19132`
    - **Source CIDR**: `0.0.0.0/0`
@@ -109,7 +136,22 @@ cd ../bedrock
 
 ---
 
-### 🛠️ Admin Tips
+### ⚙️ Recommended server.properties
+
+Create server.properties manually inside ~/Minecraft/bedrock/ with these settings:
+
+```text
+max-players=5
+view-distance=5
+tick-distance=3
+player-idle-timeout=10
+white-list=true
+online-mode=true
+```
+
+---
+
+### 🛠️ Server Management Tips
 
 - Check memory usage:
 
@@ -121,14 +163,12 @@ cd ../bedrock
 - View server logs:
 
   ```bash
-  tail -f ../bedrock/logs/latest.log
+  tail -f ~/Minecraft/bedrock/logs/latest.log
   ```
 
-- Auto-start on reboot:
-  ```bash
-  crontab -e
-  @reboot screen -dmS bedrock ~/Minecraft/bedrock-server-oracle/start.sh
-  ```
+- Stop the server:
+
+  Inside the screen, press Ctrl+C, or type stop if in-game.
 
 ---
 

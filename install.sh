@@ -3,59 +3,43 @@
 
 set -e
 
-# Define directories
-ROOT_DIR="$HOME/Minecraft"
-BEDROCK_DIR="$ROOT_DIR/bedrock"
-REPO_DIR="$ROOT_DIR/bedrock-server-oracle"
-ZIP_FILE="$BEDROCK_DIR/bedrock-server.zip"
-SERVER_URL="https://www.minecraft.net/content/dam/minecraft-bedrock-server/bedrock-server-1.21.84.1.zip"
-
 echo "[*] Updating system..."
 sudo apt update && sudo apt upgrade -y
 sudo apt install unzip screen wget -y
 
-echo "[*] Creating folder structure..."
-mkdir -p "$BEDROCK_DIR"
-mkdir -p "$REPO_DIR"
+echo "[*] Creating ~/Minecraft folder structure..."
+mkdir -p ~/Minecraft/bedrock
+cd ~/Minecraft/bedrock
 
-# Download if ZIP not found
+# Dynamically detect the ZIP file in the repo folder
+ZIP_FILE=$(ls ../bedrock-server-oracle/bedrock-server-*.zip 2>/dev/null | head -n 1)
+
 if [ ! -f "$ZIP_FILE" ]; then
-    echo "[*] Bedrock server ZIP not found, attempting download..."
-    if wget -O "$ZIP_FILE" "$SERVER_URL"; then
-        echo "[✓] Download successful."
-    else
-        echo "[!] Failed to download Bedrock server."
-        echo "    Please download it manually and upload to:"
-        echo "    $ZIP_FILE"
-        exit 1
-    fi
-else
-    echo "[✓] Found existing bedrock-server.zip at $ZIP_FILE"
+  echo "[!] No bedrock-server-*.zip found in ../bedrock-server-oracle"
+  echo "    Please upload the file using HestiaCP or similar, then download it to:"
+  echo "    ~/Minecraft/bedrock-server-oracle/bedrock-server-<version>.zip"
+  exit 1
 fi
 
-# Extract server
-cd "$BEDROCK_DIR"
-echo "[*] Extracting Bedrock server..."
+echo "[*] Using Bedrock server archive: $ZIP_FILE"
+cp "$ZIP_FILE" bedrock-server.zip
+
+echo "[*] Extracting server..."
 unzip -o bedrock-server.zip
 chmod +x bedrock_server
 
-# Setup swap if not already enabled
-echo "[*] Setting up 1GB swap file..."
-if ! sudo swapon --show | grep -q '/swapfile'; then
-    sudo fallocate -l 1G /swapfile || sudo dd if=/dev/zero of=/swapfile bs=1M count=1024
-    sudo chmod 600 /swapfile
-    sudo mkswap /swapfile
-    sudo swapon /swapfile
-    grep -q '/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
-    echo "[✓] Swap file created."
-else
-    echo "[✓] Swap file already active."
-fi
+echo "[*] Creating 1GB swap file..."
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+grep -q '/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
-# Copy server config
-echo "[*] Copying server.properties..."
-cp "$REPO_DIR/server.properties" "$BEDROCK_DIR/server.properties"
+echo "[*] Enabling server auto-start on reboot..."
+(crontab -l 2>/dev/null; echo "@reboot screen -dmS bedrock \$HOME/Minecraft/bedrock/start.sh") | crontab -
 
 echo "[✓] Setup complete!"
-echo "To start the server, run:"
-echo "cd $BEDROCK_DIR && ./start.sh"
+echo "Now configure your server with:"
+echo "nano ~/Minecraft/bedrock/server.properties"
+echo "Then start the server with:"
+echo "cd ~/Minecraft/bedrock && ./start.sh"
