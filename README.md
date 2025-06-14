@@ -74,10 +74,9 @@ To run in the background using screen:
 ```bash
 screen -S bedrock
 ./start.sh
-# Detach with Ctrl+A then D
 ```
 
-To detach
+To detach:
 
 ```text
 Ctrl+A, then D
@@ -96,7 +95,7 @@ screen -r bedrock
 The install.sh script adds the following to your crontab:
 
 ```bash
-@reboot screen -dmS bedrock $HOME/Minecraft/bedrock/start.sh
+@reboot screen -dmS bedrock $HOME/Minecraft/bedrock-server-oracle/start.sh
 ```
 
 You can confirm it with:
@@ -131,7 +130,7 @@ crontab -l
 
 ### ⚙️ Recommended server.properties
 
-Create server.properties manually inside ~/Minecraft/bedrock/ with these settings:
+Edit server.properties manually inside ~/Minecraft/bedrock/ with these settings:
 
 ```text
 max-players=5
