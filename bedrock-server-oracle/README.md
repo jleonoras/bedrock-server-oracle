@@ -1,135 +1,156 @@
-# Bedrock Server for Oracle Cloud (1GB RAM)
+# 🟩 Bedrock Server for Oracle Cloud (1GB RAM)
 
-This setup is optimized to run a lightweight Minecraft Bedrock Dedicated Server on an Oracle Cloud Free Tier VM (1GB RAM).
+This setup is optimized to run a lightweight **Minecraft Bedrock Dedicated Server** on an **Oracle Cloud Free Tier VM** with **1GB RAM**. It includes swap setup, auto-restart, and clean configuration management.
 
-## Setup
+---
+
+## 🚀 Quick Setup
 
 ```bash
-git clone https://github.com/yourusername/bedrock-server-oracle.git
+git clone https://github.com/jleonoras/bedrock-server-oracle.git
 cd bedrock-server-oracle
 chmod +x install.sh start.sh
 ./install.sh
 ```
 
-After installation:
+Then start the server:
 
 ```bash
-cd ~/bedrock
+cd ../bedrock
 ./start.sh
 ```
 
-## Features
+---
 
-- Swap-enabled
-- Auto-restart on crash
-- Small view/tick distance for performance
-- Configurable via `server.properties`
+## ✅ Features
+
+- Designed for 1GB RAM Oracle VM
+- 1GB swap setup (persistent)
+- Auto-restart on server crash
+- Folder structure:
+  - `Minecraft/bedrock`: Server files
+  - `Minecraft/bedrock-server-oracle`: Setup scripts
+- `server.properties` included
+- `screen` session support
+
+---
 
 ## 📦 Step-by-Step Deployment Guide
 
-### 1. Download the Server Setup
+### 1. Prepare Your VM
 
-SSH into your VM, then run:
+Update and install dependencies:
 
 ```bash
-wget https://chat.openai.com/sandbox/bedrock-server-oracle.zip
-unzip bedrock-server-oracle.zip
+sudo apt update && sudo apt install unzip screen wget -y
+```
+
+Clone this repo:
+
+```bash
+git clone https://github.com/jleonoras/bedrock-server-oracle.git
 cd bedrock-server-oracle
 chmod +x install.sh start.sh
 ```
 
-If `wget` fails, download the ZIP locally and upload to the server via SCP:
+---
+
+### 2. Get the Bedrock Server File
+
+**Option A — Download directly:**
 
 ```bash
-scp bedrock-server-oracle.zip ubuntu@your-server-ip:~
+wget -O ../bedrock/bedrock-server.zip https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.84.1.zip
+```
+
+**Option B — Use SCP if `wget` fails:**
+
+1. Download the `.zip` manually from the [official site](https://www.minecraft.net/en-us/download/server/bedrock).
+2. Upload it:
+
+```bash
+scp bedrock-server-1.21.84.1.zip ubuntu@your-server-ip:~/Minecraft/bedrock/bedrock-server.zip
 ```
 
 ---
 
-### 2. Run the Installer
+### 3. Run the Installer
 
 ```bash
 ./install.sh
 ```
 
-This script will:
-- Update your system
-- Install `unzip`, `screen`, and `wget`
-- Download the Bedrock server
-- Set up 1GB of swap space (needed for 1GB RAM)
-- Apply lightweight server settings
+The script will:
+
+- Update packages
+- Install unzip, screen, wget
+- Extract the server ZIP
+- Setup 1GB swap
+- Copy `server.properties`
 
 ---
 
-### 3. Start the Server
+### 4. Start the Server
 
-```bash
-./start.sh
-```
-
-Or use `screen` to keep it running in the background:
+Use inside a `screen` session to keep it alive:
 
 ```bash
 screen -S bedrock
+cd ../bedrock
 ./start.sh
-# Detach with Ctrl+A then D
 ```
 
-To reattach:
-```bash
-screen -r bedrock
-```
+- **Detach**: `Ctrl+A` then `D`
+- **Reattach**: `screen -r bedrock`
 
 ---
 
-### 4. Open Port 19132 (UDP) in Oracle Cloud
+### 5. Open Port 19132 (UDP) in Oracle Cloud
 
-1. Go to Oracle Cloud Console → Networking → VCN → Subnets → Security Lists
-2. Add an Ingress Rule:
+1. Go to Oracle Cloud → **Networking > VCN > Subnets > Security Lists**
+2. Add **Ingress Rule**:
    - **Protocol**: UDP
-   - **Port**: 19132
-   - **Source CIDR**: 0.0.0.0/0
+   - **Port**: `19132`
+   - **Source CIDR**: `0.0.0.0/0`
 
 ---
 
-### 5. Connect from Minecraft
+### 6. Connect from Minecraft
 
-- Use your Oracle Cloud **public IP**
-- **Port**: 19132
-- Version: Any compatible Bedrock version
+- Platform: **Bedrock Edition (Mobile, Windows 10, Console)**
+- Server IP: **Your Oracle Cloud public IP**
+- Port: `19132` (default)
 
 ---
 
-### 🛠️ Tips
+## 🛠 Tips
 
-- Monitor RAM usage:
+- Check memory usage:
+
   ```bash
   free -h
   top
   ```
 
-- Monitor logs:
+- View server logs:
+
   ```bash
-  tail -f ~/bedrock/logs/latest.log
+  tail -f ../bedrock/logs/latest.log
   ```
 
-- Start server on boot:
+- Auto-start on reboot:
   ```bash
   crontab -e
-  @reboot screen -dmS bedrock ~/bedrock-server-oracle/start.sh
+  @reboot screen -dmS bedrock ~/Minecraft/bedrock-server-oracle/start.sh
   ```
 
 ---
 
 ## 🙌 Support & Donation
 
-If this project helped you or saved you time, consider buying me a coffee!
+If this project helped you, please consider supporting:
 
-☕ [Buy Me a Coffee](https://www.buymeacoffee.com/yourname)
+[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.me/jleonoras)  
+[☕ Buy Me a Coffee](https://www.buymeacoffee.com/jleonoras)
 
-Or support via:
-
-- BTC: `your-bitcoin-wallet-address`
-- PayPal: [yourname@example.com](mailto:yourname@example.com)
-
-Thanks for keeping the blocky goodness alive! 🧱💖
+Thanks for helping keep the blocky goodness alive! 🧱💖
