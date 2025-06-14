@@ -4,13 +4,81 @@ This setup is optimized to run a lightweight **Minecraft Bedrock Dedicated Serve
 
 ---
 
-## 🚀 Quick Setup
+## 📂 Folder Structure
+
+```text
+~/Minecraft/
+├── bedrock/                   # Actual Bedrock server files
+│   ├── bedrock_server
+│   ├── server.properties
+│   └── bedrock-server.zip
+└── bedrock-server-oracle/     # Your Git repository
+    ├── install.sh
+    ├── start.sh
+    └── README.md
+```
+
+---
+
+## 🚀 Setup Instructions
+
+### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/jleonoras/bedrock-server-oracle.git
-cd bedrock-server-oracle
+git clone https://github.com/jleonoras/bedrock-server-oracle.git ~/Minecraft/bedrock-server-oracle
+cd ~/Minecraft/bedrock-server-oracle
 chmod +x install.sh start.sh
+```
+
+### 2. Download the Bedrock Server
+
+You have two options:
+
+📥 (A) Automatic Download
+
+If wget works in your region, the script will download the server for you:
+
+```bash
 ./install.sh
+```
+
+🔁 (B) Manual Upload via SCP (If wget fails)
+
+1. Download the server ZIP from:
+
+   https://www.minecraft.net/en-us/download/server/bedrock
+
+2. Upload it to your server:
+
+```bash
+scp bedrock-server-*.zip ubuntu@<your-server-ip>:~/Minecraft/bedrock/bedrock-server.zip
+```
+
+3. Then run the installer:
+
+```bash
+./install.sh
+```
+
+### ▶️ Starting the Server
+
+From the server directory:
+
+```bash
+cd ~/Minecraft/bedrock
+./start.sh
+```
+
+It will run inside a screen session named bedrock. You can detach with:
+
+```bash
+Ctrl + A, then D
+```
+
+To reattach:
+
+```bash
+screen -r bedrock
 ```
 
 Then start the server:
@@ -22,92 +90,9 @@ cd ../bedrock
 
 ---
 
-## ✅ Features
+### 🔓 Open Port 19132 (UDP) on Oracle Cloud
 
-- Designed for 1GB RAM Oracle VM
-- 1GB swap setup (persistent)
-- Auto-restart on server crash
-- Folder structure:
-  - `Minecraft/bedrock`: Server files
-  - `Minecraft/bedrock-server-oracle`: Setup scripts
-- `server.properties` included
-- `screen` session support
-
----
-
-## 📦 Step-by-Step Deployment Guide
-
-### 1. Prepare Your VM
-
-Update and install dependencies:
-
-```bash
-sudo apt update && sudo apt install unzip screen wget -y
-```
-
-Clone this repo:
-
-```bash
-git clone https://github.com/jleonoras/bedrock-server-oracle.git
-cd bedrock-server-oracle
-chmod +x install.sh start.sh
-```
-
----
-
-### 2. Get the Bedrock Server File
-
-**Option A — Download directly:**
-
-```bash
-wget -O ../bedrock/bedrock-server.zip https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.84.1.zip
-```
-
-**Option B — Use SCP if `wget` fails:**
-
-1. Download the `.zip` manually from the [official site](https://www.minecraft.net/en-us/download/server/bedrock).
-2. Upload it:
-
-```bash
-scp bedrock-server-1.21.84.1.zip ubuntu@your-server-ip:~/Minecraft/bedrock/bedrock-server.zip
-```
-
----
-
-### 3. Run the Installer
-
-```bash
-./install.sh
-```
-
-The script will:
-
-- Update packages
-- Install unzip, screen, wget
-- Extract the server ZIP
-- Setup 1GB swap
-- Copy `server.properties`
-
----
-
-### 4. Start the Server
-
-Use inside a `screen` session to keep it alive:
-
-```bash
-screen -S bedrock
-cd ../bedrock
-./start.sh
-```
-
-- **Detach**: `Ctrl+A` then `D`
-- **Reattach**: `screen -r bedrock`
-
----
-
-### 5. Open Port 19132 (UDP) in Oracle Cloud
-
-1. Go to Oracle Cloud → **Networking > VCN > Subnets > Security Lists**
+1. Go to Oracle Cloud → Networking > VCN > Subnets > Security Lists
 2. Add **Ingress Rule**:
    - **Protocol**: UDP
    - **Port**: `19132`
@@ -115,15 +100,16 @@ cd ../bedrock
 
 ---
 
-### 6. Connect from Minecraft
+### 🎮 Connect From Minecraft
 
 - Platform: **Bedrock Edition (Mobile, Windows 10, Console)**
 - Server IP: **Your Oracle Cloud public IP**
 - Port: `19132` (default)
+- Works with all compatible Bedrock clients
 
 ---
 
-## 🛠 Tips
+### 🛠️ Admin Tips
 
 - Check memory usage:
 
@@ -146,7 +132,7 @@ cd ../bedrock
 
 ---
 
-## 🙌 Support & Donation
+### 🙌 Support & Donations
 
 If this project helped you, please consider supporting:
 
