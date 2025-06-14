@@ -32,8 +32,8 @@ cd ~/bedrock
 SSH into your VM, then run:
 
 ```bash
-wget https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.84.1.zip
-unzip bedrock-server-oracle.zip
+wget -O bedrock-server.zip https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.84.1.zip
+unzip bedrock-server.zip
 cd bedrock-server-oracle
 chmod +x install.sh start.sh
 ```
