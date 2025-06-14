@@ -9,7 +9,7 @@ echo "[*] Creating bedrock directory..."
 mkdir -p ~/bedrock && cd ~/bedrock
 
 echo "[*] Downloading Bedrock server..."
-wget -O bedrock-server.zip https://minecraft.net/en-us/download/server/bedrock
+wget -O bedrock-server.zip https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.84.1.zip
 unzip bedrock-server.zip
 chmod +x bedrock_server
 

@@ -32,7 +32,7 @@ cd ~/bedrock
 SSH into your VM, then run:
 
 ```bash
-wget https://chat.openai.com/sandbox/bedrock-server-oracle.zip
+wget https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.84.1.zip
 unzip bedrock-server-oracle.zip
 cd bedrock-server-oracle
 chmod +x install.sh start.sh
@@ -53,6 +53,7 @@ scp bedrock-server-oracle.zip ubuntu@your-server-ip:~
 ```
 
 This script will:
+
 - Update your system
 - Install `unzip`, `screen`, and `wget`
 - Download the Bedrock server
@@ -76,6 +77,7 @@ screen -S bedrock
 ```
 
 To reattach:
+
 ```bash
 screen -r bedrock
 ```
@@ -103,12 +105,14 @@ screen -r bedrock
 ### 🛠️ Tips
 
 - Monitor RAM usage:
+
   ```bash
   free -h
   top
   ```
 
 - Monitor logs:
+
   ```bash
   tail -f ~/bedrock/logs/latest.log
   ```
@@ -130,7 +134,7 @@ If this project helped you or saved you time, consider buying me a coffee!
 Or support via:
 
 - <a href="https://www.paypal.me/jleonoras" target="_blank">
-  <img src="https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal" alt="Donate with PayPal" />
-</a>
+    <img src="https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal" alt="Donate with PayPal" />
+  </a>
 
 Thanks for keeping the blocky goodness alive! 🧱💖
