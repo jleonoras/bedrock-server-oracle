@@ -42,9 +42,8 @@ echo "[*] Extracting server..."
 unzip -o bedrock-server.zip
 chmod +x bedrock_server
 
-echo "[*] Installing systemd service..."
+echo "[*] Installing bedrock.service..."
 SERVICE_PATH="/etc/systemd/system/bedrock.service"
-SCREEN_PATH=$(command -v screen)
 
 sudo tee "$SERVICE_PATH" > /dev/null <<EOF
 [Unit]
@@ -54,8 +53,7 @@ After=network.target
 [Service]
 User=$USER
 WorkingDirectory=/home/$USER/Minecraft/bedrock
-ExecStart=/home/$USER/Minecraft/bedrock-server-oracle/start.sh
-ExecStop=$SCREEN_PATH -S bedrock -X quit
+ExecStart=/home/$USER/Minecraft/bedrock/bedrock_server
 Environment=LD_LIBRARY_PATH=/home/$USER/Minecraft/bedrock
 
 [Install]

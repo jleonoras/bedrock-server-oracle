@@ -98,6 +98,32 @@ sudo systemctl status bedrock
 
 ---
 
+### 🧰 Accessing the Server Console (Advanced)
+
+The actual server runs in the background using a **screen** session, launched by `systemd`.
+
+To interact with it manually:
+
+### View available screen sessions:
+
+```bash
+screen -ls
+```
+
+### Attach to the session:
+
+```bash
+screen -r bedrock
+```
+
+### Detach from the session (keep it running):
+
+While inside the screen:
+
+`Ctrl + A`, then `D`
+
+---
+
 ### 🔓 Open Port 19132 (UDP) on Oracle Cloud
 
 1. Oracle Cloud Console
@@ -150,32 +176,6 @@ player-idle-timeout=10
 white-list=true
 online-mode=true
 ```
-
----
-
-### 🧰 Accessing the Server Console (Advanced)
-
-The actual server runs in the background using a **screen** session, launched by `systemd`.
-
-To interact with it manually:
-
-### View available screen sessions:
-
-```bash
-screen -ls
-```
-
-### Attach to the session:
-
-```bash
-screen -r bedrock
-```
-
-### Detach from the session (keep it running):
-
-While inside the screen:
-
-`Ctrl + A`, then `D`
 
 ---
 
