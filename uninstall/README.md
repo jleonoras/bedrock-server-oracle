@@ -37,6 +37,7 @@ This will save your world into a ZIP file inside:
 This will stop and remove the Bedrock service, delete the server files, and remove the swap configuration (if any).
 
 ```bash
+cd ~/Minecraft/bedrock-server-oracle/uninstall
 chmod +x uninstall.sh
 ./uninstall.sh
 ```

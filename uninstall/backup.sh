@@ -3,6 +3,13 @@
 
 set -e
 
+# Check for zip
+if ! command -v zip &> /dev/null; then
+  echo "[*] 'zip' not found. Installing..."
+  sudo apt update
+  sudo apt install zip -y
+fi
+
 BEDROCK_DIR="$HOME/Minecraft/bedrock"
 BACKUP_DIR="$HOME/Minecraft/backups"
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
