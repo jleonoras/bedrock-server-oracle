@@ -60,9 +60,9 @@ chmod +x install.sh start.sh download.sh
 ./download.sh
 ```
 
-This downloads the latest supported Bedrock server version and saves it as:
+This automatically fetches and downloads the latest supported Bedrock server ZIP into:
 
-`~/Minecraft/bedrock-server-oracle/bedrock-server-1.21.84.1.zip`
+`~/Minecraft/bedrock-server-oracle/`
 
 ### 3. Install the Server
 
