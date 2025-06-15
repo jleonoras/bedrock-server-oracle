@@ -29,17 +29,21 @@ chmod +x bedrock_server
 
 echo "[*] Creating 1GB swap file..."
 
-# Turn off swap if already active, and remove old file
-sudo swapoff /swapfile 2>/dev/null || true
+# Turn off and remove existing swap file (if any)
+if grep -q '/swapfile' /proc/swaps; then
+  echo "[i] Disabling existing swap..."
+  sudo swapoff /swapfile || true
+fi
+
 sudo rm -f /swapfile
 
-# Create new swap file
+# Create and activate new swap file
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
 
-# Ensure it persists after reboot
+# Ensure persistence
 grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 echo "[*] Installing systemd service..."
