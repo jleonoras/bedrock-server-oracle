@@ -79,7 +79,7 @@ screen -S bedrock
 To detach:
 
 ```text
-Ctrl+A, then D
+Ctrl + A, then D
 ```
 
 To reattach:
@@ -113,9 +113,21 @@ crontab -l
 2. Navigate: Networking → VCN → Subnets → Security Lists
 
 3. Add **Ingress Rule**:
+
    - **Protocol**: UDP
    - **Port**: `19132`
    - **Source CIDR**: `0.0.0.0/0`
+
+4. In your VPS (Ubuntu/Debian)
+
+If you're using ufw, open the port like this:
+
+```bash
+sudo ufw allow 19132/udp
+sudo ufw reload
+```
+
+- 💡 Skip this if ufw is inactive (sudo ufw status)
 
 ---
 
