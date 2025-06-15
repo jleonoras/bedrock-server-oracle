@@ -27,14 +27,19 @@ This setup is optimized to run a lightweight **Minecraft Bedrock Dedicated Serve
 ```text
 Minecraft/
 ├── bedrock/
-│ ├── bedrock_server
-│ ├── server.properties
-│ └── bedrock-server.zip
+│   ├── bedrock_server
+│   ├── server.properties
+│   └── bedrock-server.zip
+├── backup/
+│   └── (world files...)
 └── bedrock-server-oracle/
-  ├── install.sh
-  ├── start.sh
-  ├── README.md
-  └── bedrock-server-<version>.zip
+    ├── install.sh
+    ├── start.sh
+    ├── download.sh
+    ├── README.md
+    ├── bedrock-server-<version>.zip
+    ├── uninstall/
+    └── restore/
 ```
 
 ---
@@ -46,14 +51,18 @@ Minecraft/
 ```bash
 git clone https://github.com/jleonoras/bedrock-server-oracle.git ~/Minecraft/bedrock-server-oracle
 cd ~/Minecraft/bedrock-server-oracle
-chmod +x install.sh start.sh
+chmod +x install.sh start.sh download.sh
 ```
 
-### 2. Upload the Bedrock Server ZIP
+### 2. Download the Bedrock Server ZIP
 
 ```bash
-wget -O ~/Minecraft/bedrock-server-oracle/bedrock-server-1.21.84.1.zip https://bedrock.jleonoras.eu.org/bedrock-server-1.21.84.1.zip
+./download.sh
 ```
+
+This downloads the latest supported Bedrock server version and saves it as:
+
+`~/Minecraft/bedrock-server-oracle/bedrock-server-1.21.84.1.zip`
 
 ### 3. Install the Server
 
@@ -188,6 +197,12 @@ While inside the screen:
 - Stop the server:
 
 Inside the screen, press `Ctrl + C` to stop the server, or type `stop`.
+
+---
+
+### 🧹 **Want to uninstall and do a fresh install?**
+
+See [Uninstall Guide](uninstall/README.md)
 
 ---
 
