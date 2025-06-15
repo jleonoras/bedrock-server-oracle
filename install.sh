@@ -28,11 +28,19 @@ unzip -o bedrock-server.zip
 chmod +x bedrock_server
 
 echo "[*] Creating 1GB swap file..."
+
+# Turn off swap if already active, and remove old file
+sudo swapoff /swapfile 2>/dev/null || true
+sudo rm -f /swapfile
+
+# Create new swap file
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
-grep -q '/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+
+# Ensure it persists after reboot
+grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 echo "[*] Installing systemd service..."
 SERVICE_PATH="/etc/systemd/system/bedrock.service"
