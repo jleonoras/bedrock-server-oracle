@@ -1,11 +1,5 @@
-
----
-
-## ✅ `install.sh`
-
-```bash
 #!/bin/bash
-# install.sh — Automated Bedrock Server setup for Oracle Cloud (1GB RAM)
+# install.sh — Simple Minecraft Bedrock Server setup for Oracle Cloud (1GB RAM)
 
 set -e
 
@@ -17,17 +11,16 @@ echo "[*] Creating ~/Minecraft folder structure..."
 mkdir -p ~/Minecraft/bedrock
 cd ~/Minecraft/bedrock
 
-# Detect server ZIP
+# Find the Bedrock server zip
 ZIP_FILE=$(ls ../bedrock-server-oracle/bedrock-server-*.zip 2>/dev/null | head -n 1)
 
 if [ ! -f "$ZIP_FILE" ]; then
   echo "[!] No bedrock-server-*.zip found in ../bedrock-server-oracle"
-  echo "    Upload it and place it at:"
-  echo "    ~/Minecraft/bedrock-server-oracle/bedrock-server-<version>.zip"
+  echo "    Upload it to: ~/Minecraft/bedrock-server-oracle/bedrock-server-<version>.zip"
   exit 1
 fi
 
-echo "[*] Using Bedrock server archive: $ZIP_FILE"
+echo "[*] Using archive: $ZIP_FILE"
 cp "$ZIP_FILE" bedrock-server.zip
 
 echo "[*] Extracting server..."
@@ -41,11 +34,42 @@ sudo mkswap /swapfile
 sudo swapon /swapfile
 grep -q '/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
-echo "[*] Enabling server auto-start on reboot..."
-(crontab -l 2>/dev/null; echo "@reboot screen -dmS bedrock \$HOME/Minecraft/bedrock-server-oracle/start.sh") | crontab -
+echo "[*] Installing systemd service..."
+SERVICE_PATH="/etc/systemd/system/bedrock.service"
+SCREEN_PATH=$(command -v screen)
 
-echo "[✓] Setup complete!"
-echo "Now configure your server with:"
-echo "nano ~/Minecraft/bedrock/server.properties"
-echo "Then start the server with:"
-echo "../bedrock-server-oracle/start.sh"
+sudo tee "$SERVICE_PATH" > /dev/null <<EOF
+[Unit]
+Description=Minecraft Bedrock Server
+After=network.target
+
+[Service]
+User=$USER
+WorkingDirectory=/home/$USER/Minecraft/bedrock
+ExecStart=/home/$USER/Minecraft/bedrock-server-oracle/start.sh
+ExecStop=$SCREEN_PATH -S bedrock -X quit
+Environment=LD_LIBRARY_PATH=/home/$USER/Minecraft/bedrock
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+echo "[*] Enabling and starting bedrock.service..."
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable bedrock
+sudo systemctl start bedrock
+
+echo
+echo "[✓] Installation complete!"
+echo
+echo "Manage the server with:"
+echo "  sudo systemctl start bedrock"
+echo "  sudo systemctl stop bedrock"
+echo "  sudo systemctl restart bedrock"
+echo "  sudo systemctl status bedrock"
+echo
+echo "Edit server config with:"
+echo "  nano ~/Minecraft/bedrock/server.properties"
+echo
+echo "✅ Make sure UDP port 19132 is open in Oracle Cloud and VPS firewall!"

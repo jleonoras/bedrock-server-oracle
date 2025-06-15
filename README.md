@@ -1,16 +1,24 @@
 # 🟩 Bedrock Server for Oracle Cloud (1GB RAM)
 
-This setup is optimized to run a lightweight **Minecraft Bedrock Dedicated Server** on an **Oracle Cloud Free Tier VM** with **1GB RAM**. It includes swap setup, auto-restart, and clean configuration management.
+This setup is optimized to run a lightweight **Minecraft Bedrock Dedicated Server** on an **Oracle Cloud Free Tier VM** with **1GB RAM**. It includes swap setup, systemd-based service for auto-start, and clean directory structure.
 
 ---
 
 ## 📦 Features
 
-- ✅ Pre-packaged Bedrock server ZIP
-- 🌀 Auto-start on system reboot
-- 🧠 1GB swap space for stability
-- ⚙️ Pre-tuned `server.properties` guidance
-- 💥 Runs in `screen-based` session for resilience
+- ✅ Ready-to-use Bedrock server ZIP.
+  No need to download from Mojang manually — just upload and install.
+- 🔁 Auto-start on reboot with `systemd`.
+  Your server comes back online automatically after a restart.
+- ⚙️ Managed with `systemctl`.
+  Start, stop, or restart cleanly with simple commands — no `screen` needed.
+
+- 🧠 1GB Swap file setup.
+  Helps prevent crashes on 1GB RAM Oracle Cloud VMs.
+- 🔧 Pre-tuned server.properties
+  Recommended settings included for best performance and stability.
+- 🧼 Clean folder structure.
+  Separates server files from setup scripts for easy updates.
 
 ---
 
@@ -22,7 +30,6 @@ Minecraft/
 │ ├── bedrock_server
 │ ├── server.properties
 │ └── bedrock-server.zip
-│
 └── bedrock-server-oracle/
   ├── install.sh
   ├── start.sh
@@ -56,78 +63,54 @@ wget -O ~/Minecraft/bedrock-server-oracle/bedrock-server-1.21.84.1.zip https://b
 
 This script will:
 
-- Update the system
 - Install required packages
-- Extract Bedrock server into ~/Minecraft/bedrock/
-- Create a 1GB swap file
-- Add auto-start at reboot via crontab
+- Set up `~/Minecraft/` folder structure
+- Extract the Bedrock server
+- Create 1GB swap file
+- Set up and enable a `systemd` service
 
-### 4. Start the Server
+### ▶️ Starting / Stopping the Server
 
-```bash
-cd ~/Minecraft/bedrock-server-oracle
-./start.sh
-```
+The installer automatically enables `minecraft-bedrock.service`, so the server starts on boot.
 
-To run in the background using screen:
-
-```bash
-screen -S bedrock
-./start.sh
-```
-
-To detach:
+You can manage the server using standard Linux service commands:
 
 ```text
-Ctrl + A, then D
+sudo systemctl start bedrock
+sudo systemctl stop bedrock
+sudo systemctl restart bedrock
 ```
 
-To reattach:
+To check its status:
 
 ```bash
-screen -r bedrock
-```
-
----
-
-### 🔁 Auto-Start on Reboot
-
-The installer adds this to crontab:
-
-```bash
-@reboot screen -dmS bedrock $HOME/Minecraft/bedrock-server-oracle/start.sh
-```
-
-You can confirm it with:
-
-```bash
-crontab -l
+sudo systemctl status bedrock
 ```
 
 ---
 
 ### 🔓 Open Port 19132 (UDP) on Oracle Cloud
 
-1. Go to Oracle Cloud Console
+1. Oracle Cloud Console
 
-2. Navigate: Networking → VCN → Subnets → Security Lists
+- Navigate: Networking → VCN → Subnets → Security Lists
 
-3. Add **Ingress Rule**:
+- Add a new **Ingress Rule**:
 
-   - **Protocol**: UDP
-   - **Port**: `19132`
-   - **Source CIDR**: `0.0.0.0/0`
+  - **Protocol**: UDP
+  - **Port**: `19132`
+  - **Source CIDR**: `0.0.0.0/0`
 
-4. In your VPS (Ubuntu/Debian)
+2. In your VPS (Ubuntu/Debian)
 
-If you're using ufw, open the port like this:
+If using ufw:
 
 ```bash
 sudo ufw allow 19132/udp
 sudo ufw reload
 ```
 
-- 💡 Skip this if ufw is inactive (sudo ufw status)
+- 💡 Skip if `ufw` is not enabled. (`sudo ufw status`)
 
 ---
 
@@ -140,11 +123,9 @@ sudo ufw reload
 
 ---
 
-### ⚙️ Recommended server.properties
+### ⚙️ Recommended `server.properties`
 
-Edit server.properties manually inside ~/Minecraft/bedrock/ with these settings:
-
-Edit manually:
+Edit the file:
 
 ```bash
 nano ~/Minecraft/bedrock/server.properties
@@ -163,7 +144,33 @@ online-mode=true
 
 ---
 
-### 🛠️ Server Management Tips
+### 🧰 Accessing the Server Console (Advanced)
+
+The actual server runs in the background using a **screen** session, launched by `systemd`.
+
+To interact with it manually:
+
+### View available screen sessions:
+
+```bash
+screen -ls
+```
+
+### Attach to the session:
+
+```bash
+screen -r bedrock
+```
+
+### Detach from the session (keep it running):
+
+While inside the screen:
+
+`Ctrl + A`, then `D`
+
+---
+
+### 🛠️ Monitoring & Logs
 
 - Check memory usage:
 
@@ -180,7 +187,7 @@ online-mode=true
 
 - Stop the server:
 
-  Inside the screen, press Ctrl+C, or type stop if in-game.
+Inside the screen, press `Ctrl + C` to stop the server, or type `stop`.
 
 ---
 
@@ -189,6 +196,6 @@ online-mode=true
 If this project helped you, please consider supporting:
 
 [![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.me/jleonoras)  
-[☕ Buy Me a Coffee](https://www.buymeacoffee.com/jleonoras)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_a_Coffee-support-yellow.svg?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/jleonoras)
 
 Thanks for helping keep the blocky goodness alive! 🧱💖
