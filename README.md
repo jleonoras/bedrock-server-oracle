@@ -75,11 +75,11 @@ The installer automatically enables `minecraft-bedrock.service`, so the server s
 
 You can manage the server using standard Linux service commands:
 
-```text
-sudo systemctl start bedrock
-sudo systemctl stop bedrock
-sudo systemctl restart bedrock
-```
+`sudo systemctl start bedrock`
+
+`sudo systemctl stop bedrock`
+
+`sudo systemctl restart bedrock`
 
 To check its status:
 
