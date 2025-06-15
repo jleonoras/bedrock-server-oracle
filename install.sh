@@ -1,7 +1,22 @@
 #!/bin/bash
-# install.sh — Simple Minecraft Bedrock Server setup for Oracle Cloud (1GB RAM)
+# install.sh — Simple Minecraft Bedrock Server setup for Oracle Cloud (1GB+ RAM)
 
 set -e
+
+echo "[*] Checking for swap file..."
+
+if grep -q '/swapfile' /proc/swaps; then
+  echo "[i] Swap file already exists. Skipping creation."
+  swapon --show
+else
+  echo "[*] Creating 4GB swap file for Minecraft performance..."
+  sudo fallocate -l 4G /swapfile || sudo dd if=/dev/zero of=/swapfile bs=1M count=4096
+  sudo chmod 600 /swapfile
+  sudo mkswap /swapfile
+  sudo swapon /swapfile
+  echo '[✓] Swap file created and enabled.'
+  grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab > /dev/null
+fi
 
 echo "[*] Updating system..."
 sudo apt update && sudo apt upgrade -y
@@ -26,25 +41,6 @@ cp "$ZIP_FILE" bedrock-server.zip
 echo "[*] Extracting server..."
 unzip -o bedrock-server.zip
 chmod +x bedrock_server
-
-echo "[*] Creating 1GB swap file..."
-
-# Turn off and remove existing swap file (if any)
-if grep -q '/swapfile' /proc/swaps; then
-  echo "[i] Disabling existing swap..."
-  sudo swapoff /swapfile || true
-fi
-
-sudo rm -f /swapfile
-
-# Create and activate new swap file
-sudo fallocate -l 1G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-
-# Ensure persistence
-grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 echo "[*] Installing systemd service..."
 SERVICE_PATH="/etc/systemd/system/bedrock.service"

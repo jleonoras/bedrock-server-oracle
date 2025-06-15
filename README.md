@@ -75,7 +75,7 @@ This script will:
 - Install required packages
 - Set up `~/Minecraft/` folder structure
 - Extract the Bedrock server
-- Create 1GB swap file
+- Create 4GB swap file
 - Set up and enable a `systemd` service
 
 ### ▶️ Starting / Stopping the Server
