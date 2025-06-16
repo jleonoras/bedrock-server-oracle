@@ -38,6 +38,7 @@ Minecraft/
     ├── download.sh
     ├── README.md
     ├── bedrock-server-<version>.zip
+    ├── backup/
     ├── uninstall/
     └── restore/
 ```
@@ -124,6 +125,21 @@ While inside the screen:
 
 ---
 
+### 🛠️ Monitoring & Logs
+
+- Check memory usage:
+
+  ```bash
+  free -h
+  top
+  ```
+
+- Stop the server:
+
+Inside the screen, press `Ctrl + C` to stop the server.
+
+---
+
 ### 🔓 Open Port 19132 (UDP) on Oracle Cloud
 
 1. Oracle Cloud Console
@@ -176,27 +192,6 @@ player-idle-timeout=10
 white-list=true
 online-mode=true
 ```
-
----
-
-### 🛠️ Monitoring & Logs
-
-- Check memory usage:
-
-  ```bash
-  free -h
-  top
-  ```
-
-- View server logs:
-
-  ```bash
-  tail -f ~/Minecraft/bedrock/logs/latest.log
-  ```
-
-- Stop the server:
-
-Inside the screen, press `Ctrl + C` to stop the server, or type `stop`.
 
 ---
 

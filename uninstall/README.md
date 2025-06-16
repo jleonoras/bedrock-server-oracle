@@ -23,7 +23,7 @@ It stops the service, removes swap, and deletes server files — **without touch
 Before uninstalling, it’s highly recommended to back up your world data.
 
 ```bash
-cd ~/Minecraft/bedrock-server-oracle/uninstall
+cd ~/Minecraft/bedrock-server-oracle/backup
 chmod +x backup.sh
 ./backup.sh
 ```
@@ -65,3 +65,9 @@ It does not delete the `~/Minecraft/backups/` folder.
 To reinstall the Minecraft Bedrock server, just follow the installation steps.
 
 See [📄 Install Guide](../README.md)
+
+---
+
+### ♻️ Want to restore your world after reinstalling?
+
+See [📄 Restore Guide](../restore/README.md)
