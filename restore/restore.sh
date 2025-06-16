@@ -8,8 +8,8 @@ WORLD_DIR="$HOME/Minecraft/bedrock/worlds"
 
 echo "[*] Looking for latest backup in: $BACKUP_DIR"
 
-# Find latest backup ZIP file
-LATEST_BACKUP=$(ls -t "$BACKUP_DIR"/world-backup-*.zip 2>/dev/null | head -n 1)
+# Find latest backup ZIP file (corrected pattern)
+LATEST_BACKUP=$(ls -t "$BACKUP_DIR"/world_backup_*.zip 2>/dev/null | head -n 1)
 
 if [ -z "$LATEST_BACKUP" ]; then
   echo "[!] No backup files found in $BACKUP_DIR"
