@@ -22,3 +22,6 @@ else
   echo "[✓] Server started in screen session 'bedrock'."
   echo "    Use 'screen -r bedrock' to view the console."
 fi
+
+# Keeps systemd from marking the service as stopped
+tail -f /dev/null

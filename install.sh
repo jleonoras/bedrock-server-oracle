@@ -44,6 +44,15 @@ chmod +x bedrock_server
 
 echo "[*] Installing bedrock.service..."
 SERVICE_PATH="/etc/systemd/system/bedrock.service"
+START_SCRIPT="$HOME/Minecraft/bedrock-server-oracle/start.sh"
+USER_NAME=$(whoami)
+
+# 🛠 Write systemd service
+SERVICE_PATH="/etc/systemd/system/bedrock.service"
+START_SCRIPT="$HOME/Minecraft/bedrock-server-oracle/start.sh"
+USER_NAME=$(whoami)
+
+echo "[*] Installing systemd service at $SERVICE_PATH..."
 
 sudo tee "$SERVICE_PATH" > /dev/null <<EOF
 [Unit]
@@ -51,17 +60,17 @@ Description=Minecraft Bedrock Server
 After=network.target
 
 [Service]
-User=$USER
-WorkingDirectory=/home/$USER/Minecraft/bedrock
-ExecStart=/home/$USER/Minecraft/bedrock/bedrock_server
-Environment=LD_LIBRARY_PATH=/home/$USER/Minecraft/bedrock
+User=$USER_NAME
+WorkingDirectory=/home/$USER_NAME/Minecraft/bedrock-server-oracle
+ExecStart=$START_SCRIPT
+ExecStop=/usr/bin/screen -S bedrock -X quit
+Restart=no
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
 echo "[*] Enabling and starting bedrock.service..."
-sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl enable bedrock
 sudo systemctl start bedrock
