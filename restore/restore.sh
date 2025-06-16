@@ -8,7 +8,7 @@ WORLD_DIR="$HOME/Minecraft/bedrock/worlds"
 
 echo "[*] Looking for latest backup in: $BACKUP_DIR"
 
-# Find latest backup ZIP file (corrected pattern)
+# Find latest backup ZIP file
 LATEST_BACKUP=$(ls -t "$BACKUP_DIR"/world_backup_*.zip 2>/dev/null | head -n 1)
 
 if [ -z "$LATEST_BACKUP" ]; then
@@ -28,7 +28,7 @@ echo "[*] Clearing existing world..."
 rm -rf "$WORLD_DIR"/*
 
 echo "[*] Restoring backup..."
-unzip -o "$LATEST_BACKUP" -d "$WORLD_DIR"
+unzip -o "$LATEST_BACKUP" -d "$HOME/Minecraft/bedrock" > /dev/null
 
 echo "[*] Restarting server..."
 sudo systemctl start bedrock
