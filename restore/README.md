@@ -32,6 +32,7 @@ To restore a specific backup file:
 
 ```bash
 cd ~/Minecraft/bedrock-server-oracle/restore
+chmod +x restore.sh
 ./restore.sh path/to/your-backup.zip
 ```
 
@@ -39,6 +40,7 @@ Example:
 
 ```bash
 cd ~/Minecraft/bedrock-server-oracle/restore
+chmod +x restore.sh
 ./restore.sh ~/Minecraft/backups/world-backup-20250614-1430.zip
 ```
 
