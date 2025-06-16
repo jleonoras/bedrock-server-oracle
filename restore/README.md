@@ -31,12 +31,16 @@ This will:
 To restore a specific backup file:
 
 ```bash
+cd ~/Minecraft/bedrock-server-oracle/restore
 ./restore.sh path/to/your-backup.zip
 ```
 
 Example:
 
-`./restore.sh ~/Minecraft/backups/world-backup-20250614-1430.zip`
+```bash
+cd ~/Minecraft/bedrock-server-oracle/restore
+./restore.sh ~/Minecraft/backups/world-backup-20250614-1430.zip
+```
 
 ---
 
