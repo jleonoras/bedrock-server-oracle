@@ -57,13 +57,18 @@ chmod +x install.sh start.sh download.sh
 
 ### 2. Download the Bedrock Server ZIP
 
+Run the download script. It will prompt you to paste the download link for the server.
+
 ```bash
 ./download.sh
 ```
 
-This automatically fetches and downloads the latest supported Bedrock server ZIP into:
+1. The script will show you the official Minecraft download page URL.
+2. Go to that page in your browser.
+3. Find the Linux server download link, right-click it, and select "Copy Link Address".
+4. Paste the copied link into the terminal when prompted and press Enter.
 
-`~/Minecraft/bedrock-server-oracle/`
+The script will then download the server ZIP file into the `~/Minecraft/bedrock-server-oracle/` directory.
 
 ### 3. Install the Server
 
