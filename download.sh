@@ -1,24 +1,35 @@
 #!/bin/bash
-# download.sh — Automatically fetches and downloads the latest Bedrock Server ZIP
+# download.sh — Automatically fetches the latest Bedrock Server link from minecraft.net
 
 set -e
 
+# --- Configuration ---
 DEST_DIR=~/Minecraft/bedrock-server-oracle
+# A browser User-Agent is required because minecraft.net blocks tools like curl/wget
+USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+MINECRAFT_URL="httpss://www.minecraft.net/en-us/download/server/bedrock"
+
+# --- Script ---
 mkdir -p "$DEST_DIR"
 
-echo "[*] Fetching latest version info..."
-LATEST_VERSION=$(curl -s https://bedrock.jleonoras.eu.org/latest.txt)
+echo "[*] Fetching latest download link from minecraft.net..."
 
-if [ -z "$LATEST_VERSION" ]; then
-  echo "[!] Could not fetch latest version. Exiting."
+# Scrape the webpage to find the official download URL for the Linux binary
+DOWNLOAD_URL=$(curl -A "$USER_AGENT" -s "$MINECRAFT_URL" | grep -o 'https://minecraft.net/bedrockdedicatedserver/bin-linux/[^"]*' | head -n 1)
+
+if [ -z "$DOWNLOAD_URL" ]; then
+  echo "[!] Could not find download link on the page. The website structure might have changed."
   exit 1
 fi
 
-FILENAME="bedrock-server-$LATEST_VERSION.zip"
-URL="https://bedrock.jleonoras.eu.org/$FILENAME"
+# Get the filename from the full URL (e.g., bedrock-server-1.21.93.1.zip)
+FILENAME=$(basename "$DOWNLOAD_URL")
 DEST="$DEST_DIR/$FILENAME"
 
-echo "[*] Downloading Bedrock Server $LATEST_VERSION..."
-wget -O "$DEST" "$URL"
+echo "[*] Found URL: $DOWNLOAD_URL"
+echo "[*] Downloading $FILENAME..."
 
-echo "[✓] Downloaded to: $DEST"
+# Use wget with the same User-Agent to download the file
+wget -U "$USER_AGENT" -O "$DEST" "$DOWNLOAD_URL"
+
+echo "[✓] Download complete: $DEST"
