@@ -64,10 +64,10 @@ It does not delete the `~/Minecraft/backups/` folder.
 
 To reinstall the Minecraft Bedrock server, just follow the installation steps.
 
-See [📄 Install Guide](../README.md)
+See [Install Guide](../README.md)
 
 ---
 
 ### ♻️ Want to restore your world after reinstalling?
 
-See [📄 Restore Guide](../restore/README.md)
+See [Restore Guide](../restore/README.md)
